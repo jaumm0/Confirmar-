@@ -1,0 +1,49 @@
+# 🍼 Chá de Fralda — Confirmação de Presença
+
+Sistema simples: os convidados abrem o link, digitam o nome e confirmam.
+Você acompanha tudo no painel do anfitrião.
+
+## Como rodar
+
+```bash
+node server.js
+```
+
+Ao iniciar, o terminal mostra os links:
+
+- **Neste computador:** `http://localhost:3000`
+- **Para os convidados:** `http://SEU-IP:3000` (funciona para quem estiver na **mesma rede Wi-Fi** que o PC)
+- **Painel do anfitrião:** `http://localhost:3000/admin`
+
+> Se o Windows perguntar sobre o firewall na primeira execução, clique em **"Permitir acesso"** (redes privadas).
+
+## Painel do anfitrião
+
+Acesse `/admin` — **sem senha**, conforme pedido. Qualquer pessoa com o link pode ver a lista e remover confirmações; para proteger de novo com senha, basta pedir.
+
+## Personalizar a página
+
+Abra `public/index.html` e procure os blocos marcados com **✏️ EDITE AQUI**:
+título, mensagem, data, horário e local. Campos deixados como `''` ficam escondidos.
+
+## Como funciona
+
+- Confirmação duplicada com o **mesmo nome atualiza** o registro (evita duplicados por engano).
+- O convidado pode informar acompanhantes e deixar um recado.
+- Dados ficam em `confirmados.json` — para backup, basta copiar esse arquivo.
+- A lista de nomes aparece na página pública; recados e horários só no painel.
+
+## Deixar o site acessível pela internet
+
+**Jeito rápido (link HTTPS descartável):** dê dois cliques em **`publicar.bat`**.
+Ele sobe o servidor e cria um túnel Cloudflare; a URL `https://algo.trycloudflare.com`
+aparece no terminal — copie e mande no grupo. Detalhes:
+
+- A URL **muda toda vez** que você religar (é descartável mesmo).
+- O link funciona **enquanto a janela estiver aberta e o PC ligado**.
+- O túnel usa o `cloudflared` já instalado na máquina.
+
+Alternativas mais permanentes: túnel nomeado do Cloudflare (URL fixa, precisa de conta grátis)
+ou hospedagem grátis no Render.com (`npm start`).
+
+> Nota: este sistema é para um evento pequeno e roda em HTTP simples — adequado para lista de presença, não para dados sensíveis.
