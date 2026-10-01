@@ -43,7 +43,23 @@ aparece no terminal — copie e mande no grupo. Detalhes:
 - O link funciona **enquanto a janela estiver aberta e o PC ligado**.
 - O túnel usa o `cloudflared` já instalado na máquina.
 
-Alternativas mais permanentes: túnel nomeado do Cloudflare (URL fixa, precisa de conta grátis)
-ou hospedagem grátis no Render.com (`npm start`).
+## Publicar na Vercel (URL fixa, sem precisar do PC ligado)
+
+A Vercel não deixa gravar arquivos no disco das funções, então o `confirmados.json`
+passa a viver como **arquivo na nuvem via Vercel Blob** — não é um banco de dados,
+é apenas o mesmo arquivo, alojado online.
+
+1. Importe esta pasta como projeto na [vercel.com](https://vercel.com) (upload ou Git).
+2. No projeto: **Storage → Create → Blob → Connect to project**
+   (isso injeta a variável `BLOB_READ_WRITE_TOKEN` automaticamente).
+3. Publique de novo para a nova configuração valer.
+4. **Migrar as confirmações já existentes no PC (uma vez só):** copie o valor de
+   `BLOB_READ_WRITE_TOKEN` da conexão e rode no PowerShell, nesta pasta:
+   `$env:BLOB_READ_WRITE_TOKEN="cole-o-token-aqui"; node importar.js`
+5. Teste a página e o `/admin` no link da Vercel.
+
+Detalhes: as rotas de `/api/*` viraram a função `api/[[...caminho]].js`
+(same API que o `server.js`), o `public/` é servido estático via `vercel.json`,
+e `node server.js` continua funcionando normal no PC com o `confirmados.json` local.
 
 > Nota: este sistema é para um evento pequeno e roda em HTTP simples — adequado para lista de presença, não para dados sensíveis.
