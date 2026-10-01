@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "sprite-gen": {
+      "source": "aldegad/sprite-gen",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "89d4e0ac4198e8a333ff28ca34481025879561c80898468fe3aa3b8fe3756555"
+    }
+  }
+}

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>Golem de Cristal — boss estilo Terraria</title>
+  <desc>Boss: cabeça de pedra azul-acinzentada com coroa e chifres de cristal rosa, olhos brilhantes e boca rachada, estilo pixel art chapado de Terraria.</desc>
+
+  <g stroke="#241733" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+
+    <!-- ===== massa de pedra: cabeça ===== -->
+    <path d="M 96 292
+             C 96 232 128 186 178 158
+             C 206 142 230 134 256 132
+             C 282 134 306 142 334 158
+             C 384 186 416 232 416 292
+             C 416 356 396 408 350 442
+             C 322 462 290 472 256 472
+             C 222 472 190 462 162 442
+             C 116 408 96 356 96 292 Z"
+          fill="#4a4e69"/>
+
+    <!-- brilho no topo-esquerda -->
+    <polygon points="140,250 256,146 256,206 186,238 150,290" fill="#62678a" stroke="none"/>
+    <!-- sombra na base -->
+    <path d="M 130 380 Q 256 500 382 380 Q 330 448 256 452 Q 182 448 130 380 Z"
+          fill="#3b3f57" stroke="none"/>
+
+    <!-- ===== coroa de cristais ===== -->
+    <polygon points="150,92 190,150 168,172 128,124" fill="#b829de"/>
+    <polygon points="150,108 172,146 158,158" fill="#e05fff" stroke="none"/>
+    <polygon points="362,92 322,150 344,172 384,124" fill="#b829de"/>
+    <polygon points="362,108 354,158 340,146" fill="#e05fff" stroke="none"/>
+    <polygon points="256,44 292,128 256,152 220,128" fill="#e05fff"/>
+    <polygon points="256,66 238,122 256,138" fill="#f2b7ff" stroke="none"/>
+    <polygon points="256,66 272,124 256,140" fill="#b829de" stroke="none"/>
+
+    <!-- ===== chifres laterais ===== -->
+    <polygon points="64,238 128,258 108,300 44,272" fill="#e05fff"/>
+    <polygon points="76,250 108,262 98,282" fill="#f2b7ff" stroke="none"/>
+    <polygon points="448,238 384,258 404,300 468,272" fill="#e05fff"/>
+    <polygon points="436,250 414,262 424,282" fill="#f2b7ff" stroke="none"/>
+
+    <!-- ===== sobrancelhas bravas ===== -->
+    <polygon points="150,240 232,252 210,276 150,268" fill="#241733" stroke="none"/>
+    <polygon points="362,240 280,252 302,276 362,268" fill="#241733" stroke="none"/>
+
+    <!-- ===== olhos ===== -->
+    <polygon points="164,286 228,286 220,322 172,322" fill="#241733"/>
+    <polygon points="284,286 348,286 340,322 292,322" fill="#241733"/>
+    <circle cx="196" cy="302" r="46" fill="#ffd6ff" opacity="0.15" stroke="none"/>
+    <circle cx="196" cy="302" r="30" fill="#ffd6ff" opacity="0.35" stroke="none"/>
+    <circle cx="196" cy="302" r="15" fill="#ffd6ff" stroke="none"/>
+    <circle cx="316" cy="302" r="46" fill="#ffd6ff" opacity="0.15" stroke="none"/>
+    <circle cx="316" cy="302" r="30" fill="#ffd6ff" opacity="0.35" stroke="none"/>
+    <circle cx="316" cy="302" r="15" fill="#ffd6ff" stroke="none"/>
+
+    <!-- ===== boca rachada + presas ===== -->
+    <polyline points="196,386 218,366 240,386 262,362 284,386 306,366 316,384"
+              fill="none" stroke-width="11"/>
+    <polygon points="226,386 242,386 234,404" fill="#e9e6f2" stroke-width="5"/>
+    <polygon points="270,386 286,386 278,404" fill="#e9e6f2" stroke-width="5"/>
+
+    <!-- ===== fragmentos flutuantes ===== -->
+    <circle cx="76"  cy="420" r="18" fill="#4a4e69" stroke-width="6"/>
+    <circle cx="436" cy="430" r="14" fill="#62678a" stroke-width="6"/>
+    <circle cx="64"  cy="150" r="12" fill="#62678a" stroke-width="5"/>
+    <circle cx="448" cy="160" r="16" fill="#4a4e69" stroke-width="6"/>
+    <polygon points="76,360 88,378 76,396 64,378"  fill="#b829de" stroke-width="5"/>
+    <polygon points="440,376 452,394 440,412 428,394" fill="#e05fff" stroke-width="5"/>
+  </g>
+</svg>

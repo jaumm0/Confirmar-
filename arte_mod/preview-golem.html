@@ -1,0 +1,193 @@
+<title>Golem de Cristal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #17131f;
+    --surface: #221c2e;
+    --line: #3a3149;
+    --text: #ece7f4;
+    --muted: #a99fc0;
+    --accent: #e05fff;
+    --mono: ui-monospace, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+    padding: 28px 20px 40px;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; display: grid; gap: 22px; }
+
+  header { display: grid; gap: 6px; }
+  .eyebrow {
+    font-family: "Silkscreen", monospace;
+    font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  h1 {
+    font-family: "Silkscreen", monospace;
+    font-size: clamp(24px, 6vw, 34px); margin: 0; line-height: 1.15;
+    text-wrap: balance;
+  }
+  .sub { color: var(--muted); font-size: 15px; max-width: 60ch; }
+
+  /* --- hero: boss no xadrez de transparência --- */
+  .hero {
+    border: 1px solid var(--line); border-radius: 14px;
+    background:
+      repeating-conic-gradient(#2c2438 0% 25%, #241d30 0% 50%) 0 0 / 26px 26px;
+    display: grid; place-items: center;
+    padding: 34px 16px;
+  }
+  .hero svg { width: min(300px, 72%); height: auto; animation: bob 3.6s ease-in-out infinite; }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  @media (prefers-reduced-motion: reduce) { .hero svg { animation: none; } }
+  .caption { color: var(--muted); font-size: 13px; text-align: center; margin-top: -12px; }
+
+  /* --- três fundos de teste --- */
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 560px) { .tiles { grid-template-columns: 1fr; } }
+  .tile { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; display: grid; }
+  .tile .stage { aspect-ratio: 1; display: grid; place-items: center; }
+  .tile svg { width: 62%; height: auto; }
+  .tile figcaption {
+    font-size: 12.5px; color: var(--muted); padding: 8px 10px;
+    border-top: 1px solid var(--line); background: var(--surface);
+  }
+  .t-checker { background: repeating-conic-gradient(#e4e2ea 0% 25%, #fbfafc 0% 50%) 0 0 / 22px 22px; }
+  .t-cave    { background: #0e0b14; }
+  .t-sky     { background: #8fc9f2; }
+
+  /* --- paleta --- */
+  section h2 {
+    font-family: "Silkscreen", monospace; font-size: 15px; margin: 0 0 10px;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: grid; gap: 2px; justify-items: center;
+    border: 1px solid var(--line); border-radius: 8px;
+    padding: 6px 8px; background: var(--surface); min-width: 74px;
+  }
+  .chip i { width: 34px; height: 22px; border-radius: 4px; border: 1px solid rgba(255,255,255,.14); }
+  .chip span { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+
+  /* --- próximos passos --- */
+  .steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; counter-reset: s; }
+  .steps li {
+    counter-increment: s; position: relative; padding-left: 40px; font-size: 14.5px;
+  }
+  .steps li::before {
+    content: counter(s); position: absolute; left: 0; top: 1px;
+    font-family: "Silkscreen", monospace; font-size: 12px;
+    color: var(--accent); border: 1px solid var(--line);
+    border-radius: 7px; padding: 3px 8px; background: var(--surface);
+  }
+  .file {
+    font-family: var(--mono); font-size: 12px; color: var(--muted);
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; padding: 8px 10px; overflow-x: auto; white-space: nowrap;
+  }
+</style>
+
+<!-- símbolo do boss, desenhado uma vez e reutilizado -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="boss" viewBox="0 0 512 512">
+    <g stroke="#241733" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M 96 292 C 96 232 128 186 178 158 C 206 142 230 134 256 132 C 282 134 306 142 334 158 C 384 186 416 232 416 292 C 416 356 396 408 350 442 C 322 462 290 472 256 472 C 222 472 190 462 162 442 C 116 408 96 356 96 292 Z" fill="#4a4e69"/>
+      <polygon points="140,250 256,146 256,206 186,238 150,290" fill="#62678a" stroke="none"/>
+      <path d="M 130 380 Q 256 500 382 380 Q 330 448 256 452 Q 182 448 130 380 Z" fill="#3b3f57" stroke="none"/>
+      <polygon points="150,92 190,150 168,172 128,124" fill="#b829de"/>
+      <polygon points="150,108 172,146 158,158" fill="#e05fff" stroke="none"/>
+      <polygon points="362,92 322,150 344,172 384,124" fill="#b829de"/>
+      <polygon points="362,108 354,158 340,146" fill="#e05fff" stroke="none"/>
+      <polygon points="256,44 292,128 256,152 220,128" fill="#e05fff"/>
+      <polygon points="256,66 238,122 256,138" fill="#f2b7ff" stroke="none"/>
+      <polygon points="256,66 272,124 256,140" fill="#b829de" stroke="none"/>
+      <polygon points="64,238 128,258 108,300 44,272" fill="#e05fff"/>
+      <polygon points="76,250 108,262 98,282" fill="#f2b7ff" stroke="none"/>
+      <polygon points="448,238 384,258 404,300 468,272" fill="#e05fff"/>
+      <polygon points="436,250 414,262 424,282" fill="#f2b7ff" stroke="none"/>
+      <polygon points="150,240 232,252 210,276 150,268" fill="#241733" stroke="none"/>
+      <polygon points="362,240 280,252 302,276 362,268" fill="#241733" stroke="none"/>
+      <polygon points="164,286 228,286 220,322 172,322" fill="#241733"/>
+      <polygon points="284,286 348,286 340,322 292,322" fill="#241733"/>
+      <circle cx="196" cy="302" r="46" fill="#ffd6ff" opacity="0.15" stroke="none"/>
+      <circle cx="196" cy="302" r="30" fill="#ffd6ff" opacity="0.35" stroke="none"/>
+      <circle cx="196" cy="302" r="15" fill="#ffd6ff" stroke="none"/>
+      <circle cx="316" cy="302" r="46" fill="#ffd6ff" opacity="0.15" stroke="none"/>
+      <circle cx="316" cy="302" r="30" fill="#ffd6ff" opacity="0.35" stroke="none"/>
+      <circle cx="316" cy="302" r="15" fill="#ffd6ff" stroke="none"/>
+      <polyline points="196,386 218,366 240,386 262,362 284,386 306,366 316,384" fill="none" stroke-width="11"/>
+      <polygon points="226,386 242,386 234,404" fill="#e9e6f2" stroke-width="5"/>
+      <polygon points="270,386 286,386 278,404" fill="#e9e6f2" stroke-width="5"/>
+      <circle cx="76"  cy="420" r="18" fill="#4a4e69" stroke-width="6"/>
+      <circle cx="436" cy="430" r="14" fill="#62678a" stroke-width="6"/>
+      <circle cx="64"  cy="150" r="12" fill="#62678a" stroke-width="5"/>
+      <circle cx="448" cy="160" r="16" fill="#4a4e69" stroke-width="6"/>
+      <polygon points="76,360 88,378 76,396 64,378"  fill="#b829de" stroke-width="5"/>
+      <polygon points="440,376 452,394 440,412 428,394" fill="#e05fff" stroke-width="5"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Mod Terraria · Boss</div>
+    <h1>Golem de Cristal</h1>
+    <p class="sub">Sprite vetorial do boss — pedra chapada, coroa de cristais e olhos brilhando. Flutuando como ele vai ficar no jogo.</p>
+  </header>
+
+  <div class="hero" role="img" aria-label="Golem de Cristal flutuando sobre fundo xadrez de transparência">
+    <svg viewBox="0 0 512 512"><use href="#boss"/></svg>
+  </div>
+  <p class="caption">Fundo xadrez = área transparente, como o Terraria espera.</p>
+
+  <section>
+    <h2>Fundos de teste</h2>
+    <div class="tiles">
+      <figure class="tile" style="margin:0">
+        <div class="stage t-checker"><svg viewBox="0 0 512 512"><use href="#boss"/></svg></div>
+        <figcaption>Xadrez — transparência</figcaption>
+      </figure>
+      <figure class="tile" style="margin:0">
+        <div class="stage t-cave"><svg viewBox="0 0 512 512"><use href="#boss"/></svg></div>
+        <figcaption>Caverna escura</figcaption>
+      </figure>
+      <figure class="tile" style="margin:0">
+        <div class="stage t-sky"><svg viewBox="0 0 512 512"><use href="#boss"/></svg></div>
+        <figcaption>Céu do dia</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Paleta do sprite</h2>
+    <div class="chips">
+      <div class="chip"><i style="background:#241733"></i><span>#241733 contorno</span></div>
+      <div class="chip"><i style="background:#4a4e69"></i><span>#4a4e69 pedra</span></div>
+      <div class="chip"><i style="background:#62678a"></i><span>#62678a pedra clara</span></div>
+      <div class="chip"><i style="background:#3b3f57"></i><span>#3b3f57 sombra</span></div>
+      <div class="chip"><i style="background:#e05fff"></i><span>#e05fff cristal</span></div>
+      <div class="chip"><i style="background:#b829de"></i><span>#b829de cristal escuro</span></div>
+      <div class="chip"><i style="background:#f2b7ff"></i><span>#f2b7ff brilho</span></div>
+      <div class="chip"><i style="background:#ffd6ff"></i><span>#ffd6ff olhos</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Próximos passos</h2>
+    <ol class="steps">
+      <li>Você avalia o design e pede ajustes (cor, forma, expressão)</li>
+      <li>Eu rasterizo em PNG nos tamanhos que o tModLoader espera</li>
+      <li>Gero os frames de animação empilhados na vertical (flutuar, atacar)</li>
+      <li>Os PNGs vão direto pra pasta do mod</li>
+    </ol>
+  </section>
+
+  <div class="file">arte_mod\boss-golem-cristal.svg</div>
+</div>

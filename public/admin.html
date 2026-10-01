@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel do anfitrião 🔐</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --tinta: #1c3d5c;
+      --tinta-suave: #5c7da0;
+      --azul: #2f7bd4;
+      --azul-fundo: #1f5aa8;
+      --azul-claro: #d9eaff;
+      --linha: #dfe9f5;
+      --erro: #d64545;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', system-ui, sans-serif;
+      color: var(--tinta);
+      min-height: 100dvh;
+      background: linear-gradient(180deg, #d7ecff 0%, #eef7ff 55%, #fdf6e9 100%);
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px 60px;
+    }
+    main { width: 100%; max-width: 620px; }
+    .cartao {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 16px 48px rgba(31, 90, 168, .14);
+      padding: 32px 26px;
+    }
+    h1 { font-family: 'Fredoka', sans-serif; font-size: 26px; font-weight: 600; }
+    .erro { color: var(--erro); font-weight: 700; font-size: 14px; margin-top: 10px; min-height: 18px; }
+    .stats { display: flex; gap: 22px; margin: 20px 0 4px; }
+    .stat b {
+      display: block;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 30px;
+      font-weight: 600;
+      color: var(--azul-fundo);
+      line-height: 1.1;
+    }
+    .stat span { font-size: 13px; font-weight: 700; color: var(--tinta-suave); }
+    .barra { display: flex; align-items: center; justify-content: space-between; margin: 18px 0 8px; }
+    .barra h2 { font-family: 'Fredoka', sans-serif; font-size: 19px; font-weight: 600; }
+    .barra button { background: none; border: none; color: var(--azul-fundo); font: inherit; font-weight: 800; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+    ul { list-style: none; }
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1.5px dashed var(--linha);
+    }
+    .nome { font-weight: 800; font-size: 15.5px; }
+    .detalhe { font-size: 13px; color: var(--tinta-suave); margin-top: 2px; }
+    .recado { font-size: 13.5px; font-style: italic; color: var(--tinta); margin-top: 4px; }
+    .excluir {
+      border: none;
+      background: #ffe9e9;
+      color: var(--erro);
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .excluir:hover { background: #ffdcdc; }
+    .vazio { color: var(--tinta-suave); font-style: italic; padding: 14px 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="cartao">
+      <div id="painel">
+        <h1>🍼 Quem confirmou</h1>
+        <div class="stats">
+          <div class="stat"><b id="s-total">0</b><span>confirmados</span></div>
+          <div class="stat"><b id="s-pessoas">0</b><span>pessoas ao todo</span></div>
+        </div>
+        <div class="barra">
+          <h2>Lista</h2>
+          <button id="atualizar">Atualizar</button>
+        </div>
+        <ul id="lista"><li class="vazio">Carregando…</li></ul>
+        <p class="erro" id="erro"></p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const erro = document.getElementById('erro');
+
+    async function carregar() {
+      try {
+        const resposta = await fetch('/api/admin/confirmados');
+        const dados = await resposta.json();
+        renderizar(dados.confirmados || []);
+      } catch {
+        erro.textContent = 'Não consegui falar com o servidor.';
+      }
+    }
+
+    const escapar = (texto) => texto.replace(/[&<>"']/g, (letra) =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[letra]));
+
+    function renderizar(lista) {
+      document.getElementById('s-total').textContent = lista.length;
+      document.getElementById('s-pessoas').textContent = lista.reduce(
+        (total, c) => total + 1 + (c.acompanhantes || 0), 0);
+      const ul = document.getElementById('lista');
+      if (!lista.length) {
+        ul.innerHTML = '<li class="vazio">Ninguém confirmou ainda.</li>';
+        return;
+      }
+      ul.innerHTML = lista.map((c) => {
+        const quando = new Date(c.quando).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        const junto = c.acompanhantes ? ` • +${c.acompanhantes} acompanhante(s)` : '';
+        const recado = c.recado ? `<div class="recado">“${escapar(c.recado)}”</div>` : '';
+        return `<li>
+          <div>
+            <div class="nome">${escapar(c.nome)}</div>
+            <div class="detalhe">${quando}${junto}</div>
+            ${recado}
+          </div>
+          <button class="excluir" data-id="${c.id}" title="Remover">🗑</button>
+        </li>`;
+      }).join('');
+    }
+
+    document.getElementById('atualizar').addEventListener('click', carregar);
+
+    document.getElementById('lista').addEventListener('click', async (evento) => {
+      const botao = evento.target.closest('.excluir');
+      if (!botao) return;
+      if (!confirm('Remover esta confirmação?')) return;
+      await fetch(`/api/confirmados/${botao.dataset.id}`, { method: 'DELETE' });
+      carregar();
+    });
+
+    carregar();
+  </script>
+</body>
+</html>

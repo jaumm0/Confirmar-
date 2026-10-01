@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chá de Fralda 👶</title>
+  <meta name="theme-color" content="#2f7bd4" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍼</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-1: #d7ecff;
+      --bg-2: #eef7ff;
+      --bg-3: #fdf6e9;
+      --cartao: #ffffff;
+      --tinta: #1c3d5c;
+      --tinta-suave: #5c7da0;
+      --azul: #2f7bd4;
+      --azul-fundo: #1f5aa8;
+      --azul-claro: #d9eaff;
+      --dourado: #f2b23e;
+      --linha: #dfe9f5;
+      --erro: #d64545;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Nunito', system-ui, sans-serif;
+      color: var(--tinta);
+      min-height: 100dvh;
+      background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 55%, var(--bg-3) 100%);
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px 60px;
+    }
+
+    /* nuvens decorativas no fundo */
+    .nuvem { position: fixed; z-index: 0; opacity: .8; pointer-events: none; }
+    .nuvem::before, .nuvem::after { content: ''; position: absolute; background: inherit; border-radius: 50%; }
+    .nuvem-1 { width: 130px; height: 42px; border-radius: 999px; background: rgba(255,255,255,.85); top: 9%; left: -30px; }
+    .nuvem-1::before { width: 60px; height: 60px; top: -28px; left: 22px; }
+    .nuvem-1::after { width: 44px; height: 44px; top: -20px; left: 68px; }
+    .nuvem-2 { width: 100px; height: 34px; border-radius: 999px; background: rgba(255,255,255,.7); top: 22%; right: -20px; }
+    .nuvem-2::before { width: 48px; height: 48px; top: -22px; left: 16px; }
+    .nuvem-2::after { width: 34px; height: 34px; top: -15px; left: 52px; }
+    .nuvem-3 { width: 90px; height: 30px; border-radius: 999px; background: rgba(255,255,255,.6); bottom: 14%; left: 6%; }
+    .nuvem-3::before { width: 40px; height: 40px; top: -18px; left: 14px; }
+
+    main {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 540px;
+    }
+    .cartao {
+      background: var(--cartao);
+      border-radius: 28px;
+      box-shadow: 0 16px 48px rgba(31, 90, 168, .14);
+      padding: 36px 28px 30px;
+    }
+
+    .selo {
+      display: inline-block;
+      background: var(--azul-claro);
+      color: var(--azul-fundo);
+      font-weight: 800;
+      font-size: 14px;
+      padding: 7px 16px;
+      border-radius: 999px;
+      letter-spacing: .02em;
+    }
+    .titulo {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: clamp(30px, 7vw, 40px);
+      line-height: 1.15;
+      margin: 16px 0 10px;
+    }
+    .lead { color: var(--tinta-suave); font-size: 16.5px; line-height: 1.55; }
+
+    .infos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 22px 0 6px; }
+    .info {
+      background: #f5faff;
+      border: 1px solid var(--linha);
+      border-radius: 16px;
+      padding: 12px 12px 10px;
+      text-align: center;
+    }
+    .info .icone { font-size: 20px; }
+    .info .rotulo { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--azul-fundo); margin-top: 4px; }
+    .info .valor { font-size: 13.5px; font-weight: 700; margin-top: 2px; line-height: 1.3; }
+    .info .valor a { color: var(--azul-fundo); text-decoration: underline; text-underline-offset: 2px; }
+
+    form { margin-top: 20px; }
+    .campo { margin-bottom: 16px; }
+    .campo label { display: block; font-size: 14px; font-weight: 800; margin-bottom: 6px; }
+    .campo input[type="text"], .campo textarea {
+      width: 100%;
+      font: inherit;
+      font-size: 16px;
+      color: var(--tinta);
+      background: #fbfdff;
+      border: 1.5px solid var(--linha);
+      border-radius: 14px;
+      padding: 13px 15px;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .campo input:focus, .campo textarea:focus {
+      border-color: var(--azul);
+      box-shadow: 0 0 0 4px rgba(47, 123, 212, .14);
+    }
+    .campo textarea { resize: vertical; min-height: 64px; }
+
+    .degraus {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .degrau-btn {
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 50%;
+      background: var(--azul-claro);
+      color: var(--azul-fundo);
+      font-size: 22px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .1s, background .15s;
+    }
+    .degrau-btn:hover { background: #c9e2ff; }
+    .degrau-btn:active { transform: scale(.92); }
+    .degrau-valor {
+      min-width: 56px;
+      text-align: center;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .botao {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      padding: 16px;
+      background: linear-gradient(180deg, var(--azul) 0%, var(--azul-fundo) 100%);
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: .01em;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(47, 123, 212, .35);
+      transition: transform .1s, box-shadow .15s, opacity .15s;
+      margin-top: 6px;
+    }
+    .botao:hover { box-shadow: 0 12px 28px rgba(47, 123, 212, .45); }
+    .botao:active { transform: scale(.98); }
+    .botao:disabled { opacity: .6; cursor: wait; }
+
+    .erro-msg { color: var(--erro); font-size: 14px; font-weight: 700; margin-top: 10px; min-height: 18px; }
+
+    /* tela de sucesso */
+    .sucesso { display: none; text-align: center; padding: 18px 0 8px; }
+    .sucesso.visivel { display: block; }
+    .sucesso .check {
+      width: 74px; height: 74px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: var(--azul-claro);
+      display: grid; place-items: center;
+      font-size: 36px;
+      animation: pulinho .5s cubic-bezier(.3, 1.6, .5, 1);
+    }
+    @keyframes pulinho { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .sucesso h2 { font-family: 'Fredoka', sans-serif; font-size: 27px; font-weight: 600; }
+    .sucesso p { color: var(--tinta-suave); margin: 8px 0 20px; }
+    .botao-secundario {
+      background: none;
+      border: none;
+      color: var(--azul-fundo);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    footer { text-align: center; color: var(--tinta-suave); font-size: 13.5px; margin-top: 22px; }
+
+    /* confete */
+    .confete {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 50;
+    }
+    .confete span {
+      position: absolute;
+      top: -4vh;
+      width: 10px; height: 14px;
+      border-radius: 3px;
+      animation: cair linear forwards;
+    }
+    @keyframes cair {
+      to { transform: translateY(112vh) rotate(720deg); opacity: .9; }
+    }
+
+    @media (max-width: 430px) {
+      .cartao { padding: 30px 20px 24px; }
+      .infos { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+      .info .valor { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="nuvem nuvem-1"></div>
+  <div class="nuvem nuvem-2"></div>
+  <div class="nuvem nuvem-3"></div>
+  <div class="confete" id="confete"></div>
+
+  <main>
+    <div class="cartao">
+      <!-- ✏️ EDITE AQUI: informações do seu chá -->
+      <span class="selo">🍼 Chá de Fralda</span>
+      <h1 class="titulo" id="titulo">Chá de Fralda do Bebê 👶💙</h1>
+      <p class="lead" id="mensagem">
+        Sua presença é o nosso presente maior! Confirme aqui embaixo para a gente se organizar. 💙
+      </p>
+
+      <div class="infos" id="infos">
+        <div class="info" id="info-data">
+          <div class="icone">📅</div>
+          <div class="rotulo">Data</div>
+          <div class="valor">—</div>
+        </div>
+        <div class="info" id="info-hora">
+          <div class="icone">⏰</div>
+          <div class="rotulo">Horário</div>
+          <div class="valor">—</div>
+        </div>
+        <div class="info" id="info-local">
+          <div class="icone">📍</div>
+          <div class="rotulo">Local</div>
+          <div class="valor">—</div>
+        </div>
+      </div>
+
+      <form id="formulario" novalidate>
+        <div class="campo">
+          <label for="nome">Seu nome</label>
+          <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" autocomplete="name" maxlength="60" required />
+        </div>
+        <div class="campo">
+          <label for="valor-degraus">Vou acompanhado(a) de</label>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="degraus">
+              <button type="button" class="degrau-btn" id="menos" aria-label="Menos uma pessoa">−</button>
+              <span class="degrau-valor" id="valor-degraus">0</span>
+              <button type="button" class="degrau-btn" id="mais" aria-label="Mais uma pessoa">+</button>
+            </div>
+            <span style="color:var(--tinta-suave); font-weight:700;">pessoa(s)</span>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="recado">Recado para os papais <small style="font-weight:600; color:var(--tinta-suave)">(opcional)</small></label>
+          <textarea id="recado" name="recado" maxlength="200" placeholder="Deixe um carinho…"></textarea>
+        </div>
+        <button type="submit" class="botao" id="botao">Confirmar presença 💙</button>
+        <div class="erro-msg" id="erro-msg"></div>
+      </form>
+
+      <div class="sucesso" id="sucesso">
+        <div class="check">💙</div>
+        <h2 id="sucesso-titulo">Presença confirmada!</h2>
+        <p id="sucesso-texto">Te esperamos lá! Qualquer novidade, é só falar com os papais.</p>
+        <button type="button" class="botao-secundario" id="botao-voltar">Confirmar outra pessoa</button>
+      </div>
+
+    </div>
+    <footer>Feito com 💙 para a chegada do bebê</footer>
+  </main>
+
+  <script>
+    // ✏️ EDITE AQUI: dados do evento (deixe '' para esconder um item)
+    const CONFIG = {
+      titulo: 'Chá de Fralda do Gael 👶💙',
+      mensagem: 'Sua presença é o nosso presente maior! Confirme aqui embaixo para a gente se organizar. 💙',
+      data: 'sábado, 17/10',
+      hora: 'a partir das 15h30',
+      local: 'Antonio Lourusso Correa, 192',
+    };
+
+    document.title = CONFIG.titulo;
+    document.getElementById('titulo').textContent = CONFIG.titulo;
+    document.getElementById('mensagem').textContent = CONFIG.mensagem;
+    const preencher = (id, valor) => {
+      const bloco = document.getElementById(id);
+      if (!valor) { bloco.style.display = 'none'; return; }
+      bloco.querySelector('.valor').textContent = valor;
+    };
+    preencher('info-data', CONFIG.data);
+    preencher('info-hora', CONFIG.hora);
+    preencher('info-local', CONFIG.local);
+    // sem data/horário/local definidos, a linha de informações some
+    if (!CONFIG.data && !CONFIG.hora && !CONFIG.local) {
+      document.getElementById('infos').style.display = 'none';
+    }
+    // endereço clicável: abre a busca no Google Maps
+    if (CONFIG.local) {
+      const valorLocal = document.querySelector('#info-local .valor');
+      const link = document.createElement('a');
+      link.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(CONFIG.local);
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = CONFIG.local;
+      valorLocal.textContent = '';
+      valorLocal.appendChild(link);
+    }
+
+    // contador de acompanhantes
+    let acompanhantes = 0;
+    const valorDegraus = document.getElementById('valor-degraus');
+    document.getElementById('menos').addEventListener('click', () => {
+      if (acompanhantes > 0) acompanhantes--;
+      valorDegraus.textContent = acompanhantes;
+    });
+    document.getElementById('mais').addEventListener('click', () => {
+      if (acompanhantes < 20) acompanhantes++;
+      valorDegraus.textContent = acompanhantes;
+    });
+
+    const formulario = document.getElementById('formulario');
+    const sucesso = document.getElementById('sucesso');
+    const erroMsg = document.getElementById('erro-msg');
+    const botao = document.getElementById('botao');
+
+    formulario.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      erroMsg.textContent = '';
+      const nome = document.getElementById('nome').value.trim();
+      if (!nome) { erroMsg.textContent = 'Digite seu nome para confirmar 🙂'; return; }
+
+      botao.disabled = true;
+      botao.textContent = 'Confirmando…';
+      try {
+        const resposta = await fetch('/api/confirmar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nome, acompanhantes, recado: document.getElementById('recado').value }),
+        });
+        const dados = await resposta.json();
+        if (!resposta.ok) throw new Error(dados.erro || 'Não foi possível confirmar.');
+
+        document.getElementById('sucesso-titulo').textContent = dados.atualizado
+          ? 'Presença atualizada!' : 'Presença confirmada!';
+        formulario.style.display = 'none';
+        sucesso.classList.add('visivel');
+        soltarConfete();
+      } catch (falha) {
+        erroMsg.textContent = falha.message === 'Failed to fetch'
+          ? 'Não consegui falar com o servidor. Tente novamente.' : falha.message;
+      } finally {
+        botao.disabled = false;
+        botao.textContent = 'Confirmar presença 💙';
+      }
+    });
+
+    document.getElementById('botao-voltar').addEventListener('click', () => {
+      formulario.reset();
+      acompanhantes = 0;
+      valorDegraus.textContent = 0;
+      sucesso.classList.remove('visivel');
+      formulario.style.display = '';
+      document.getElementById('nome').focus();
+    });
+
+    function soltarConfete() {
+      const cores = ['#2f7bd4', '#7db8f0', '#f2b23e', '#9ad0f5', '#ffffff'];
+      const confete = document.getElementById('confete');
+      for (let i = 0; i < 44; i++) {
+        const pedaco = document.createElement('span');
+        pedaco.style.left = Math.random() * 100 + 'vw';
+        pedaco.style.background = cores[Math.floor(Math.random() * cores.length)];
+        pedaco.style.animationDuration = 1.6 + Math.random() * 1.6 + 's';
+        pedaco.style.animationDelay = Math.random() * 0.4 + 's';
+        pedaco.style.transform = `rotate(${Math.random() * 360}deg)`;
+        confete.appendChild(pedaco);
+        setTimeout(() => pedaco.remove(), 3600);
+      }
+    }
+  </script>
+</body>
+</html>
