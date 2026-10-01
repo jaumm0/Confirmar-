@@ -168,6 +168,9 @@ export default async function handler(req, res) {
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
       return res.end('Página não encontrada');
     }
-    json(res, 500, { erro: 'Erro interno no servidor' });
+    // Projeto pequeno e só de leitura/diagnóstico: devolve a causa junto,
+    // para o dono ver na tela o que está errado sem precisar abrir logs.
+    const motivo = String(erro?.message ?? erro ?? 'desconhecido').slice(0, 180);
+    json(res, 500, { erro: `Erro interno no servidor — ${motivo}` });
   }
 }
